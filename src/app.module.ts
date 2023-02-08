@@ -9,8 +9,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    AuthModule,
-    DeviceModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
@@ -27,6 +25,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         };
       },
     }),
+    AuthModule,
+    DeviceModule,
   ],
 })
 export class AppModule {}

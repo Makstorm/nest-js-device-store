@@ -2,18 +2,29 @@ import {
   Injectable,
   BadRequestException,
   NotFoundException,
+  Inject,
 } from '@nestjs/common';
-import { UserEntity } from '../../domain/entities';
-import { RegisterDto, LoginDto } from './dto';
+
+import {
+  RegisterDto,
+  LoginDto,
+  UserEntity,
+  UserAuth,
+  IAuthService,
+} from '../../domain';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthService {
+  @Inject(JwtService)
+  private readonly jwtService: JwtService;
   @InjectRepository(UserEntity)
   private readonly userRepository: Repository<UserEntity>;
 
-  public async registration(dto: RegisterDto) {
+  public async registration(dto: RegisterDto): Promise<void> {
     const doesExist = await this.userRepository.exist({
       where: {
         email: dto.email,
@@ -25,15 +36,17 @@ export class AuthService {
     }
 
     const userEntity = new UserEntity();
+
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(dto.password, salt);
+
     userEntity.email = dto.email;
-    userEntity.passwordHash = dto.password;
+    userEntity.passwordHash = hashPassword;
 
     await this.userRepository.save(userEntity);
-
-    return userEntity;
   }
 
-  public async login(dto: LoginDto) {
+  public async login(dto: LoginDto): Promise<UserAuth> {
     const user = await this.userRepository.findOne({
       where: {
         email: dto.email,
@@ -46,10 +59,12 @@ export class AuthService {
       );
     }
 
-    if (user.passwordHash !== dto.password) {
+    const comparePassword = bcrypt.compareSync(dto.password, user.passwordHash);
+    if (!comparePassword) {
       throw new BadRequestException('Wrong credentials');
     }
 
-    return user;
+    const payload = { userId: user.id, userEmail: user.email };
+    return new UserAuth(this.jwtService.sign(payload));
   }
 }
