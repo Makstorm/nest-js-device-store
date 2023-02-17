@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { randomUUID } from 'crypto';
 
 export class DeviceInfoDto {
   @ApiProperty({ type: String })
@@ -15,12 +16,12 @@ export class DeviceDto {
   @ApiProperty({ type: Number })
   public price: number;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, example: randomUUID() })
   public brandId: string;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, example: randomUUID() })
   public typeId: string;
 
   @ApiProperty({ type: () => DeviceInfoDto })
-  public info: DeviceInfoDto;
+  public info: DeviceInfoDto[];
 }

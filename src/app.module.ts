@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AuthModule, DeviceModule } from './modules';
+import { AuthModule, DeviceModule, UserModule } from './modules';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as _entities from './domain/entities';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as path from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
@@ -25,8 +27,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         };
       },
     }),
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, 'static'),
+    }),
     AuthModule,
     DeviceModule,
+    UserModule,
   ],
 })
 export class AppModule {}
