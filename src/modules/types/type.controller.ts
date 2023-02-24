@@ -14,7 +14,7 @@ export class TypeController {
     return TypeModel.fromEntity(entity);
   }
 
-  @ApiResponse({ type: Array<TypeModel> })
+  @ApiResponse({ type: [TypeModel] })
   @Get()
   public async getAll(): Promise<TypeModel[]> {
     const entities = await this.service.getAll();

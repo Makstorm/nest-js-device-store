@@ -16,7 +16,7 @@ export class BrandController {
     return BrandModel.fromEntity(entity);
   }
 
-  @ApiResponse({ type: Array<BrandModel> })
+  @ApiResponse({ type: [BrandModel] })
   @Get()
   public async getAll(): Promise<BrandModel[]> {
     const entities = await this.service.getAll();

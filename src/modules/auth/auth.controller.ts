@@ -18,7 +18,7 @@ export class AuthController {
   @Post('register')
   public async register(@Body() dto: RegisterDto): Promise<void> {
     console.log(dto);
-    return this.service.registration(dto);
+    return await this.service.registration(dto);
   }
 
   @ApiResponse({
@@ -26,6 +26,6 @@ export class AuthController {
   })
   @Post('login')
   public async login(@Body() dto: LoginDto): Promise<UserAuth> {
-    return this.service.login(dto);
+    return await this.service.login(dto);
   }
 }

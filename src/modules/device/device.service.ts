@@ -32,14 +32,12 @@ export class DeviceService implements IDeviceService {
     dto: DeviceDto,
     file: Express.Multer.File,
   ): Promise<DeviceEntity> {
-    const typeEntity = await this.typeService.findOne(dto.typeId);
-    const brandEntity = await this.brandService.findOne(dto.brandId);
     const deviceEntity = new DeviceEntity();
 
     deviceEntity.name = dto.name;
     deviceEntity.price = dto.price;
-    deviceEntity.brandId = brandEntity;
-    deviceEntity.typeId = typeEntity;
+    deviceEntity.brandId = dto.brandId;
+    deviceEntity.typeId = dto.typeId;
     const fileName = await this.fileService.createFile(file);
     deviceEntity.img = fileName;
 

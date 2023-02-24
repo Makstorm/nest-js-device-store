@@ -15,11 +15,17 @@ export class DeviceEntity extends AbstractEntity {
 
   @ManyToOne(() => TypeEntity, (type) => type.devices)
   @JoinColumn({ name: 'type_id' })
-  public typeId: TypeEntity;
+  public type: TypeEntity;
+
+  @Column({ name: 'type_id' })
+  public typeId: string;
 
   @ManyToOne(() => BrandEntity, (brand) => brand.devices)
   @JoinColumn({ name: 'brand_id' })
-  public brandId: BrandEntity;
+  public brand: BrandEntity;
+
+  @Column({ name: 'brand_id' })
+  public brandId: string;
 
   @Column({ default: 0 })
   public rating: number;

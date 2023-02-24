@@ -7,6 +7,6 @@ export class BrandEntity extends AbstractEntity {
   @Column()
   public name: string;
 
-  @OneToMany(() => DeviceEntity, (device) => device.brandId)
+  @OneToMany(() => DeviceEntity, (device) => device.brand)
   public devices: DeviceEntity[];
 }

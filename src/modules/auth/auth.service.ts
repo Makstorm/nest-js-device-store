@@ -12,6 +12,8 @@ import {
   IAuthService,
   UserServiceTag,
   IUserService,
+  NotificatioServiceTag,
+  INotificationService,
 } from '../../domain';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -23,6 +25,9 @@ export class AuthService implements IAuthService {
 
   @Inject(JwtService)
   private readonly jwtService: JwtService;
+
+  @Inject(NotificatioServiceTag)
+  private readonly notificationService: INotificationService;
 
   public async registration(dto: RegisterDto): Promise<void> {
     const doesExist = await this.userService.isEmailTaken(dto.email);
@@ -40,6 +45,11 @@ export class AuthService implements IAuthService {
     userEntity.passwordHash = hashPassword;
 
     await this.userService.create(userEntity);
+    await this.notificationService.sendNotification({
+      mainMessage: 'New user created',
+      additionalMessage: `userId: ${userEntity.id}`,
+      reciever: null,
+    });
   }
 
   public async login(dto: LoginDto): Promise<UserAuth> {

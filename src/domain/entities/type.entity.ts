@@ -6,6 +6,6 @@ import { DeviceEntity } from './device.entity';
 export class TypeEntity extends AbstractEntity {
   @Column()
   public name: string;
-  @OneToMany(() => DeviceEntity, (device) => device.typeId)
+  @OneToMany(() => DeviceEntity, (device) => device.type)
   public devices: DeviceEntity[];
 }
