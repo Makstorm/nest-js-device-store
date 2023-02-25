@@ -4,32 +4,33 @@ import {
   NotFoundException,
   Inject,
 } from '@nestjs/common';
-
 import {
   RegisterDto,
   LoginDto,
   UserEntity,
   UserAuth,
   IAuthService,
+  UserServiceTag,
+  IUserService,
+  NotificatioServiceTag,
+  INotificationService,
 } from '../../domain';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService implements IAuthService {
+  @Inject(UserServiceTag)
+  private readonly userService: IUserService;
+
   @Inject(JwtService)
   private readonly jwtService: JwtService;
-  @InjectRepository(UserEntity)
-  private readonly userRepository: Repository<UserEntity>;
+
+  @Inject(NotificatioServiceTag)
+  private readonly notificationService: INotificationService;
 
   public async registration(dto: RegisterDto): Promise<void> {
-    const doesExist = await this.userRepository.exist({
-      where: {
-        email: dto.email,
-      },
-    });
+    const doesExist = await this.userService.isEmailTaken(dto.email);
 
     if (doesExist) {
       throw new BadRequestException(`Email ${dto.email} is already taken`);
@@ -43,15 +44,16 @@ export class AuthService implements IAuthService {
     userEntity.email = dto.email;
     userEntity.passwordHash = hashPassword;
 
-    await this.userRepository.save(userEntity);
+    await this.userService.create(userEntity);
+    await this.notificationService.sendNotification({
+      mainMessage: 'New user created',
+      additionalMessage: `userId: ${userEntity.id}`,
+      reciever: null,
+    });
   }
 
   public async login(dto: LoginDto): Promise<UserAuth> {
-    const user = await this.userRepository.findOne({
-      where: {
-        email: dto.email,
-      },
-    });
+    const user = await this.userService.findByEmail(dto.email);
 
     if (!user) {
       throw new NotFoundException(

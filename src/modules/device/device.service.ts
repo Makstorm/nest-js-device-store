@@ -1,27 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeviceEntity } from 'src/domain/entities';
 import { Repository } from 'typeorm';
-import { DeviceDto } from './dto/device.dto';
-import { DeviceFilter } from '../../domain';
+import {
+  DeviceFilter,
+  IDeviceService,
+  DeviceDto,
+  DeviceEntity,
+  IFileService,
+  FileServiceTag,
+  TypeServiceTag,
+  ITypeService,
+  BrandServiceTag,
+  IBrandService,
+} from '../../domain';
 
 @Injectable()
-export class DeviceService {
+export class DeviceService implements IDeviceService {
   @InjectRepository(DeviceEntity)
   private readonly deviceEntity: Repository<DeviceEntity>;
 
-  public async create(dto: DeviceDto): Promise<DeviceEntity> {
-    return new DeviceEntity();
+  @Inject(FileServiceTag)
+  private readonly fileService: IFileService;
+
+  @Inject(TypeServiceTag)
+  private readonly typeService: ITypeService;
+
+  @Inject(BrandServiceTag)
+  private readonly brandService: IBrandService;
+
+  public async create(
+    dto: DeviceDto,
+    file: Express.Multer.File,
+  ): Promise<DeviceEntity> {
+    const deviceEntity = new DeviceEntity();
+
+    deviceEntity.name = dto.name;
+    deviceEntity.price = dto.price;
+    deviceEntity.brandId = dto.brandId;
+    deviceEntity.typeId = dto.typeId;
+    const fileName = await this.fileService.createFile(file);
+    deviceEntity.img = fileName;
+
+    return await this.deviceEntity.save(deviceEntity);
   }
 
   public async getAll(filter: DeviceFilter): Promise<DeviceEntity[]> {
-    return [new DeviceEntity()];
+    return await this.deviceEntity.find();
   }
 
   public async getOne(id: string): Promise<DeviceEntity> {
-    const entity = new DeviceEntity();
-
-    entity.id = id;
+    const entity = await this.deviceEntity.findOne({ where: { id } });
     return entity;
   }
 }
