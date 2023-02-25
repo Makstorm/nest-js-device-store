@@ -58,5 +58,8 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+This repository used in: https://github.com/Makstorm/docker-compose-nestjs-rabbitmq.git.
+There is a doker compose file for setup this application with environment it requires: using RabbitMq to make posible connectivity to microservice
+
 
 
