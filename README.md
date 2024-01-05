@@ -1,65 +1,61 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Online Store - Micro-service Oriented REST API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This Nest.js-based REST API application serves as an online store with a micro-service-oriented architecture utilizing RabbitMQ as the message broker for communication between services.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Technologies Used
 
-## Description
+- Node.js
+- Nest.js
+- PostgreSQL with TypeORM
+- RabbitMQ for message brokering
+- Docker for containerization
+- Swagger for API documentation
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Features
+
+- **Micro-service Architecture**: Divides functionality into smaller services for scalability and maintainability.
+- **RESTful Endpoints**: Provides endpoints for managing an online store, including products, orders, and users.
+- **PostgreSQL Database**: Uses TypeORM for database interactions with PostgreSQL.
+- **Message Broker (RabbitMQ)**: Facilitates communication between microservices.
+- **Dockerized Deployment**: Utilizes Docker for containerizing services.
 
 ## Installation
 
-```bash
-$ yarn install
-```
+### Prerequisites
 
-## Running the app
+- Node.js and npm installed
+- PostgreSQL installed and running
+- RabbitMQ installed and running
+- Docker installed (optional for containerization)
 
-```bash
-# development
-$ yarn run start
+### Steps
 
-# watch mode
-$ yarn run start:dev
+1. Clone the repository: `git clone https://github.com/Makstorm/nest-js-device-store.git`
+2. Install dependencies: `cd online-store-microservices && npm install || yarn install`
+3. Configure PostgreSQL connection details in the respective configuration files.
+4. Start services: `npm run start:dev | yarn start:dev`
 
-# production mode
-$ yarn run start:prod
-```
+## Usage
 
-## Test
+### Endpoints
 
-```bash
-# unit tests
-$ yarn run test
+- Access various endpoints for managing products, orders, and users according to the Swagger documentation.
+- Use RabbitMQ for communication between microservices.
 
-# e2e tests
-$ yarn run test:e2e
+### API Documentation
 
-# test coverage
-$ yarn run test:cov
-```
+- Access the Swagger documentation at `/api/docs` to explore available endpoints and their usage.
 
-This repository used in: https://github.com/Makstorm/docker-compose-nestjs-rabbitmq.git.
-There is a doker compose file for setup this application with environment it requires: using RabbitMq to make posible connectivity to microservice
+## Contributing
 
+Contributions are welcome! To contribute:
 
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature/new-feature`
+3. Commit your changes: `git commit -m 'Add new feature'`
+4. Push to the branch: `git push origin feature/new-feature`
+5. Submit a pull request.
 
+## License
+
+This project is licensed under the [MIT License](LICENSE).
